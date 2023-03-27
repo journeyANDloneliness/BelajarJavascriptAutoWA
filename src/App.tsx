@@ -5,24 +5,47 @@ import { useState, useEffect } from 'react';
 import Question from "./pilihan_ganda/Question"
 import _ from "lodash"
 import Editor from "./Editor"
-import {doc} from "love-utility"
+
+import { useQuery, gql } from '@apollo/client';
+
+const GET_SOAL = gql`
+  query GetSoal {
+    Soal{
+      id
+      pertanyaan
+      jawaban1
+      jawaban2
+      jawaban3
+      jawaban4
+      jawaban5
+      jawaban_benar
+      type
+      hints
+      snippet
+      level
+      topic
+    }
+  }
+`;
 
 
 export default function App() {
   let [questions, setQuestions] = useState([])
   let [questionNow, setQuestionNow] = useState({})
+
+  const { loading, error, data } = useQuery(GET_SOAL);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
  
   useEffect(()=>{
-    let sheet=doc.sheetByTitle.soal1
-    sheet.getRows().then(v=>{
       setQuestions(vv=>{
-        sampleQuestion(v)
-        return v
+        sampleQuestion(data)
+        return data
       })
       
-    })
     
-  },[])
+  },[data])
 
   function sampleQuestion(questions){
     let ques = questions.filter(v=>!v.opened)

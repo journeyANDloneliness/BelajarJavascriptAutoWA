@@ -1,6 +1,9 @@
 {
   "name": "react-typescript",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=16.15.0"
+  },
   "type": "module",
   "description": "React TypeScript on Replit, using Vite bundler",
   "main": "main.cjs",
